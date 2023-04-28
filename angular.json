@@ -173,6 +173,9 @@
       "style": "scss",
       "project": "material-dashboard-angular"
     },
+    "@schematics/angular:module": {
+      "project": "material-dashboard-angular"
+    },
     "@schematics/angular:directive": {
       "prefix": "app"
     }
