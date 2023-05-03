@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { ProjectsRoutingModule } from './projects-routing.module';
+import { ProjectsRoutingModule } from './projects-routing.routing';
 import { NewComponent } from './new/new.component';
 import { ListComponent } from './list/list.component';
 
