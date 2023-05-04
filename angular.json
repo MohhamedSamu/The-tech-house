@@ -178,6 +178,13 @@
     },
     "@schematics/angular:directive": {
       "prefix": "app"
+    },
+    "project": {
+      "type": "string",
+      "description": "The name of the project.",
+      "$default": {
+        "$source": "material-dashboard-angular"
+      }
     }
   },
   "cli": {
