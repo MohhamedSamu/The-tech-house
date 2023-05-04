@@ -2,30 +2,171 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-12">
-        <button mat-raised-button class="btn btn-info pull-right" routerLink="/cruds/projects" >Regresar</button>
+        <button mat-raised-button class="btn btn-info pull-right" routerLink="/cruds/projects">Regresar</button>
       </div>
     </div>
-      <div class="row">
-          <div class="col-md-12">
-              <div class="card">
-                  <div class="card-header card-header-danger">
-                      <h4 class="card-title">Proyecto</h4>
-                  </div>
-                  <div class="card-body">
-                      <form>
-                          <div class="row">
-                              <div class="col-md-5">
-                                <mat-form-field class="example-full-width">
-                                    <input matInput placeholder="Nombre">
-                                  </mat-form-field>
-                              </div>
-                          </div>
-                          <button mat-raised-button type="submit" class="btn btn-danger pull-right">Continuar</button>
-                          <div class="clearfix"></div>
-                      </form>
-                  </div>
-              </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header card-header-danger">
+            <h4 class="card-title">Proyecto</h4>
           </div>
+          <div class="card-body">
+            <form>
+              <div class="row">
+                <div class="col-md-6">
+                  <mat-form-field class="example-full-width">
+                    <input name="projName" matInput placeholder="Nombre" [(ngModel)]="project.name">
+                  </mat-form-field>
+                </div>
+                <div class="col-md-6">
+                  <mat-form-field class="example-full-width">
+                    <input type="number" name="totalCapitalPropio" matInput placeholder="Total Capital Propio" [(ngModel)]="project.totalCapitalPropio">
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <mat-form-field class="example-full-width">
+                    <input type="number" name="tiempoPrestamo" matInput placeholder="Tiempo Prestamo" [(ngModel)]="project.tiempoPrestamo">
+                  </mat-form-field>
+                </div>
+                <div class="col-md-6">
+                  <mat-form-field class="example-full-width">
+                    <input type="number" name="tasaInteresBanco" matInput placeholder="Tasa Interes Banco" [(ngModel)]="project.tasaInteresBanco">
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row" *ngIf="createdState">
+                <div class="col-md-6">
+                  <mat-form-field class="example-full-width">
+                    <input name="totalActivosFijos" matInput placeholder="Total Activos Fijos" [(ngModel)]="project.totalActivosFijos" disabled>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-6">
+                  <mat-form-field class="example-full-width">
+                    <input name="porcentajeCapitalPropio" matInput placeholder="Porcentaje Capital Propio" [(ngModel)]="project.porcentajeCapitalPropio" disabled>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row" *ngIf="createdState">
+                <div class="col-md-6">
+                  <mat-form-field class="example-full-width">
+                    <input type="number" name="TotalPrestamo" matInput placeholder="Total Prestamo" [(ngModel)]="project.totalPrestamo" disabled>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-6">
+                  <mat-form-field class="example-full-width">
+                    <input name="porcentajePrestamo" matInput placeholder="Porcentaje Prestamo" [(ngModel)]="project.porcentajePrestamo" disabled>
+                  </mat-form-field>
+                </div>
+              </div>
+              <button mat-raised-button type="submit" class="btn btn-danger pull-right"
+                (click)="onSubmit()">Guardar</button>
+              <div class="clearfix"></div>
+            </form>
+          </div>
+        </div>
       </div>
+    </div>
+  </div>
+  <div class="container-fluid" *ngIf="createdState">
+    <mat-tab-group mat-stretch-tabs="true">
+      <mat-tab label="Activos Fijos">
+        <br>
+        <br>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header card-header-danger">
+                  <h4 class="card-title">Lista de todos los activos fijos del proyecto</h4>
+                </div>
+                <div class="card-body">
+                  <form>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <mat-form-field class="example-full-width">
+                          <input name="Nombre" matInput placeholder="Nombre" [(ngModel)]="newActivoFijo.name">
+                        </mat-form-field>
+                      </div>
+                      <div class="col-md-6">
+                        <mat-form-field class="example-full-width">
+                          <input name="valor" type="number" min="0" matInput placeholder="Valor" [(ngModel)]="newActivoFijo.valor">
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <mat-form-field class="example-full-width">
+                          <input name="porcentajeDepreciacion" type="number" min="0" matInput placeholder="Porcentaje de Depreciacion" [(ngModel)]="newActivoFijo.porcentajeDepreciacion">
+                        </mat-form-field>
+                      </div>
+                      <div class="col-md-6">
+                        <mat-form-field class="example-full-width">
+                          <input name="VidaUtil" type="number" min="0" matInput placeholder="Vida Util" [(ngModel)]="newActivoFijo.vidaUtil">
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <button mat-raised-button type="submit" class="btn btn-danger pull-right"
+                      (click)="clearNewActivoFijo()">Limpiar</button>
+                    <button mat-raised-button type="submit" class="btn btn-danger pull-right"
+                      (click)="onSubmitNewActivoFijo()">Guardar</button>
+                    <div class="clearfix"></div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row" *ngIf="activosFijosList.length > 0">
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead class="">
+                  <th>
+                    Nombre
+                  </th>
+                  <th>
+                    Valor
+                  </th>
+                  <th>
+                    Porcentaje Depreciacion
+                  </th>
+                  <th>
+                    Vida Util
+                  </th>
+                  <th>
+                    Acciones
+                  </th>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let activo of this.activosFijosList">
+                    <td>
+                      {{ activo.name }}
+                    </td>
+                    <td>
+                      {{ activo.valor }}
+                    </td>
+                    <td>
+                      {{ activo.porcentajeDepreciacion }}
+                    </td>
+                    <td>
+                      {{ activo.vidaUtil }}
+                    </td>
+                    <td>
+                      <button mat-raised-button type="submit" class="btn btn-danger" (click)="deleteActivo(activo.id)">Borrar</button>
+                      <button mat-raised-button type="submit" class="btn btn-success" (click)="editActivo(activo.id)">Edit</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+      <mat-tab label="Costos Administrativos">Content 2</mat-tab>
+      <mat-tab label="Costos Directos">Content 3</mat-tab>
+      <mat-tab label="Costos Indirectos">Content 3</mat-tab>
+      <mat-tab label="Ingresos">Content 3</mat-tab>
+    </mat-tab-group>
   </div>
 </div>

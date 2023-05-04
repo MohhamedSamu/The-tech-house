@@ -17,122 +17,56 @@
               <table class="table table-hover">
                 <thead class="">
                   <th>
-                    ID
+                    Nombre
                   </th>
                   <th>
-                    Name
+                    Capital
                   </th>
                   <th>
-                    Country
+                    Total Activos Fijos
                   </th>
                   <th>
-                    City
+                    Total Capital Propio
                   </th>
                   <th>
-                    Salary
+                    Total Prestamo
+                  </th>
+                  <th>
+                    TMAR
+                  </th>
+                  <th>
+                    Tasa Interes
+                  </th>
+                  <th>
+                    Acciones
                   </th>
                 </thead>
                 <tbody>
-                  <tr>
+                  <tr *ngFor="let project of this.projects">
                     <td>
-                      1
+                      {{ project.name }}
                     </td>
                     <td>
-                      Dakota Rice
+                      {{ project.capital }}
                     </td>
                     <td>
-                      Niger
+                      {{ project.totalActivosFijos }}
                     </td>
                     <td>
-                      Oud-Turnhout
+                      {{ project.totalCapitalPropio }}
                     </td>
                     <td>
-                      <button mat-raised-button type="submit" class="btn btn-success">Edit</button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      2
+                      {{ project.totalPrestamo }}
                     </td>
                     <td>
-                      Minerva Hooper
+                      {{ project.tmar }}
                     </td>
                     <td>
-                      Curaçao
+                      {{ project.tasaInteresBanco }}
                     </td>
                     <td>
-                      Sinaai-Waas
-                    </td>
-                    <td>
-                      <button mat-raised-button type="submit" class="btn btn-success">Edit</button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      3
-                    </td>
-                    <td>
-                      Sage Rodriguez
-                    </td>
-                    <td>
-                      Netherlands
-                    </td>
-                    <td>
-                      Baileux
-                    </td>
-                    <td>
-                      <button mat-raised-button type="submit" class="btn btn-success">Edit</button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      4
-                    </td>
-                    <td>
-                      Philip Chaney
-                    </td>
-                    <td>
-                      Korea, South
-                    </td>
-                    <td>
-                      Overland Park
-                    </td>
-                    <td>
-                      <button mat-raised-button type="submit" class="btn btn-success">Edit</button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      5
-                    </td>
-                    <td>
-                      Doris Greene
-                    </td>
-                    <td>
-                      Malawi
-                    </td>
-                    <td>
-                      Feldkirchen in Kärnten
-                    </td>
-                    <td>
-                      <button mat-raised-button type="submit" class="btn btn-success">Edit</button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      6
-                    </td>
-                    <td>
-                      Mason Porter
-                    </td>
-                    <td>
-                      Chile
-                    </td>
-                    <td>
-                      Gloucester
-                    </td>
-                    <td>
-                      <button mat-raised-button type="submit" class="btn btn-success">Edit</button>
+                      <button mat-raised-button type="submit" class="btn btn-danger" (click)="deleteProj(project.id)">Eliminar</button>
+                      <button mat-raised-button type="submit" class="btn btn-success" (click)="goTo(project.id)">Edit</button>
                     </td>
                   </tr>
                 </tbody>
