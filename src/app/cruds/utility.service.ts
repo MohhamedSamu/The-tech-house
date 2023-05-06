@@ -5,6 +5,12 @@ import { CostoIndirecto } from 'app/interfaces/costo-indirecto';
 import { Ingreso } from 'app/interfaces/ingreso';
 
 declare var $: any;
+// const finance = require('financial');
+import { Finance } from 'financejs'
+let finance = new Finance();
+
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -309,8 +315,10 @@ export class UtilityService {
     npv = this.npvCalculation(tasaInteres, flujoNetoTotal);
 
     vpn = - capital + npv;
+    
     beneficioCosto = npv / capital ;
-    itr = this.irr(flujoNetoTotal)
+
+    itr = finance.IRR(-capital, ...flujoNetoTotal);
     
     caue = this.pmt(tasaInteres/100, n, vpn, 0, 0);
 
@@ -329,33 +337,6 @@ export class UtilityService {
     }
     return result;
   }
-  irr(cashFlows) {
-    const epsilon = 0.0001;
-    let guess = 0.1;
-    let npv = 0;
-    let irr = 0;
-    let maxIterations = 1000; // Set a maximum number of iterations to prevent infinite loop
-    
-    // Calculate NPV at the guess rate
-    npv = this.npvCalculation(guess, cashFlows);
-    
-    // Iterate until NPV is close enough to zero or maximum number of iterations is reached
-    let i = 0;
-    while (Math.abs(npv) > epsilon && i < maxIterations) {
-      // Try a new rate based on the current NPV
-      guess += (npv > 0 ? -epsilon : epsilon);
-      npv = this.npvCalculation(guess, cashFlows);
-      i++;
-    }
-    
-    if (i === maxIterations) {
-      console.warn('IRR function did not converge within the maximum number of iterations.');
-    }
-    
-    irr = guess * 100;
-    return irr;
-  }
-
   pmt(rate, nper, pv, fv, type) {
     type = typeof type !== 'undefined' ? type : 0;
     
