@@ -796,10 +796,10 @@
                       <h4 class="card-title">ANÁLISIS DE RESULTADOS</h4>
                     </div>
                     <div class="card-body">
-                      VPN : {{ this.evaluacion.optimista.desiciones.vpn }} <br><br>
-                      beneficioCosto : {{ this.evaluacion.optimista.desiciones.beneficioCosto }} <br><br>
-                      caue : {{ this.evaluacion.optimista.desiciones.caue }} <br><br>
-                      itr : {{ this.evaluacion.optimista.desiciones.itr }}% <br><br>
+                      VPN : {{ this.evaluacion.optimista.desiciones.vpn | number : '1.2-2'}} <br><br>
+                      beneficioCosto : {{ this.evaluacion.optimista.desiciones.beneficioCosto | number : '1.2-2'}} <br><br>
+                      caue : {{ this.evaluacion.optimista.desiciones.caue | number : '1.2-2'}} <br><br>
+                      itr : {{ this.evaluacion.optimista.desiciones.itr | number : '1.2-2'}}% <br><br>
 
                       {{ this.evaluacion.optimista.desiciones.itr >= projectInfo.project.tmar ? 'Acepar' : 'Rechazar' }}
                     </div>

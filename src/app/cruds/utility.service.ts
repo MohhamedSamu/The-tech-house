@@ -147,7 +147,6 @@ export class UtilityService {
         valor:0
       });
     }
-    console.log("activosFijos", activosFijos)
     activosFijos = activosFijos.filter((activo) => activo.porcentajeDepreciacion != 0);
     activosFijos.forEach((activo) => {
       let anualidades = [];
@@ -310,10 +309,10 @@ export class UtilityService {
     npv = this.npvCalculation(tasaInteres, flujoNetoTotal);
 
     vpn = - capital + npv;
-    beneficioCosto = npv / - capital ;
+    beneficioCosto = npv / capital ;
     itr = this.irr(flujoNetoTotal)
     
-    caue = this.pmt(tasaInteres, n, vpn, 0, 0);
+    caue = this.pmt(tasaInteres/100, n, vpn, 0, 0);
 
     return {
       vpn:vpn,
@@ -326,7 +325,7 @@ export class UtilityService {
   npvCalculation(rate, flujoNeto){
     let result = 0;
     for (let i = 0; i < flujoNeto.length; i++) {
-      result += flujoNeto[i] / Math.pow((1 + rate), i);
+      result += flujoNeto[i] / Math.pow((1 + (rate/100)), (i + 1) );
     }
     return result;
   }
@@ -337,23 +336,15 @@ export class UtilityService {
     let irr = 0;
     let maxIterations = 1000; // Set a maximum number of iterations to prevent infinite loop
     
-    const npvCalculation = (rate, cashFlows) => {
-      let result = 0;
-      for (let i = 0; i < cashFlows.length; i++) {
-        result += cashFlows[i] / Math.pow((1 + rate), i);
-      }
-      return result;
-    }
-    
     // Calculate NPV at the guess rate
-    npv = npvCalculation(guess, cashFlows);
+    npv = this.npvCalculation(guess, cashFlows);
     
     // Iterate until NPV is close enough to zero or maximum number of iterations is reached
     let i = 0;
     while (Math.abs(npv) > epsilon && i < maxIterations) {
       // Try a new rate based on the current NPV
       guess += (npv > 0 ? -epsilon : epsilon);
-      npv = npvCalculation(guess, cashFlows);
+      npv = this.npvCalculation(guess, cashFlows);
       i++;
     }
     
@@ -372,6 +363,6 @@ export class UtilityService {
     
     pmt = Math.round(pmt * 100) / 100;
     
-    return -pmt;
+    return pmt;
   }
 }

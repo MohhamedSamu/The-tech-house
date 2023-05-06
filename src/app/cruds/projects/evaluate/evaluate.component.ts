@@ -149,8 +149,6 @@ export class EvaluateComponent {
         this.projectInfo.project.tiempoPrestamo
       );
 
-      console.log("this.costosDepreciacion", this.costosDepreciacion)
-
       this.costosDeAdministracion = this.utilityService.calcCostos(
         this.projectInfo.costosAdministrativosList,
         this.projectInfo.project.tiempoPrestamo
