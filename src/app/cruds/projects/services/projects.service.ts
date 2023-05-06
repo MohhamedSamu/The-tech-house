@@ -6,6 +6,9 @@ import { CostoDirectoService } from './costo-directo.service';
 import { CostoIndirectoService } from './costo-indirecto.service';
 import { IngresosService } from './ingresos.service';
 import { FullProjectInfo } from 'app/interfaces/full-project-info';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'environments/environment';
+import { Observable } from 'rxjs';
 
 const TABLE_NAME = "projects";
 
@@ -24,15 +27,45 @@ export class ProjectsService
     private CostoDirectoService: CostoDirectoService,
     private CostoIndirectoService: CostoIndirectoService,
     private IngresosService: IngresosService,
+    private http: HttpClient,
     ) { }
 
-  addProject(newProject: Project): void
+    getUrl(): string {
+      return `${environment.apiUrl}/project/`;
+    }
+
+    
+
+  addProject(newProject: Project): void //listo
   {
     this.projects = this.getItem();
     newProject.id = this.projects.length + 1;
     this.projects.push(newProject);
     this.setItem(this.projects);
   }
+
+  obtenerProyectos(): Observable<any>{
+    const url = this.getUrl() + 'getProjects/1';
+    return this.http.get(url);
+  }
+
+  agregarProject(newProject: Project) : Observable<any>{
+    console.log(newProject);
+    const url = this.getUrl() + 'agregarProject';
+    return this.http.post(url, newProject);
+  }
+
+  getProjectByIdd (id: any): Observable<any>{
+    const url = this.getUrl() + 'getProjectById/' + id;
+    return this.http.get(url);
+  }
+
+  editarProject(projectToEdit: Project) : Observable<any>{
+    console.log(projectToEdit);
+    const url = this.getUrl() + 'editProject';
+    return this.http.post(url, projectToEdit);
+  }
+
   cloneProject(projectIdToClone:number): void
   {
     this.projects = this.getItem();
@@ -48,12 +81,12 @@ export class ProjectsService
     this.IngresosService.cloneIngresos(projectIdToClone);
   }
 
-  getProjects(): Project[]
+  getProjects(): Project[] //listo
   {
     return this.getItem();
   }
 
-  getProjectById(id: number): Project
+  getProjectById(id: number): Project //listo
   {
     this.projects = this.getItem();
     return this.projects.filter((proj) => proj.id == id)[0];
@@ -73,7 +106,7 @@ export class ProjectsService
   }
 
 
-  editProject(projectToEdit: Project): void
+  editProject(projectToEdit: Project): void //listo
   {
     this.projects = this.getItem();
     const indexToEdit = this.projects.map(proj => proj.id).indexOf(projectToEdit.id);
@@ -96,7 +129,7 @@ export class ProjectsService
     this.IngresosService.deleteAllIngresoByProj(projectIdToDelete);
   }
 
-  actualizarValores(project:Project):void{
+  actualizarValores(project:Project):void{ 
     project.totalActivosFijos = this.activosFijosService.getActivosFijos(project.id).reduce((a, b) => a + (b['valor'] || 0), 0);
     if (project.totalActivosFijos > project.totalCapitalPropio){
       project.porcentajeCapitalPropio = project.totalCapitalPropio / project.totalActivosFijos;
@@ -107,7 +140,11 @@ export class ProjectsService
       project.totalPrestamo = 0;
       project.porcentajePrestamo = 0;
     }
-    this.editProject(project);
+    this.editarProject(project).subscribe(
+      res => {
+        console.log('editado',res);
+      }
+    );
   }
 
   getItem(){

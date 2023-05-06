@@ -18,6 +18,9 @@ export class ListComponent {
 
   ngOnInit(){
     this.projects = this.projectService.getProjects();
+    this.projectService.obtenerProyectos().subscribe(
+      res => this.projects = res
+    );
   }
 
   goTo(id:number){

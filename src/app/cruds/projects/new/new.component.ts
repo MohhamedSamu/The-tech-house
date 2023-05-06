@@ -85,59 +85,76 @@ export class NewComponent {
     private IngresosService: IngresosService,
   ) {}
 
-  ngOnInit() {
+  ngOnInit() { //funcion lista
     if (this.router.url.includes("edit")) {
       let id =
         this.router.url.split("/")[this.router.url.split("/").length - 1];
-      this.project = this.projectService.getProjectById(+id);
-      if (this.project != undefined){
-        this.tempPorcentajeBanco = (this.project.porcentajePrestamo * 100).toFixed(2) + "%"
-        this.tempPorcentajePropio = (this.project.porcentajeCapitalPropio * 100).toFixed(2) + "%"
-        this.activosFijosList = this.ActivosFijosService.getActivosFijos(+id);
-        this.costosAdministrativosList = this.CostoAdministrativoService.getCostoAdministrativos(+id);
-        this.costosDirectosList = this.CostoDirectoService.getCostoDirectos(+id);
-        this.costosIndirectosList = this.CostoIndirectoService.getActivosFijos(+id);
-        this.ingresosList = this.IngresosService.getIngresos(+id);
-        this.createdState = true;
-        if ( 
-          this.activosFijosList.length > 0 &&
-          this.costosAdministrativosList.length > 0 &&
-          this.costosDirectosList.length > 0 &&
-          this.costosIndirectosList.length > 0 &&
-          this.ingresosList.length > 0
-        ){
-          this.project.canBeEvaluated = true;
-          this.projectService.editProject(this.project)
-        }
-      }else{
-        this.project = {
-          name : "",
-          canBeEvaluated : false,
-          tmar : 0,
-          totalActivosFijos : 0,
-          porcentajeCapitalPropio : 0,
-          totalCapitalPropio : 0,
-          porcentajePrestamo : 0,
-          totalPrestamo : 0,
-          tasaInteresBanco : 0,
-          tiempoPrestamo : 0,
-          tasaImpuesto : 0,
-        };
-      }
+        // this.project = this.projectService.getProjectById(+id);
+        this.projectService.getProjectByIdd(id).subscribe(
+          res => {
+            this.project = res;
+            if (this.project != undefined){
+              this.tempPorcentajeBanco = (this.project.porcentajePrestamo * 100).toFixed(2) + "%"
+              this.tempPorcentajePropio = (this.project.porcentajeCapitalPropio * 100).toFixed(2) + "%"
+              this.activosFijosList = this.ActivosFijosService.getActivosFijos(+id);
+              this.costosAdministrativosList = this.CostoAdministrativoService.getCostoAdministrativos(+id);
+              this.costosDirectosList = this.CostoDirectoService.getCostoDirectos(+id);
+              this.costosIndirectosList = this.CostoIndirectoService.getActivosFijos(+id);
+              this.ingresosList = this.IngresosService.getIngresos(+id);
+              this.createdState = true;
+              if ( 
+                this.activosFijosList.length > 0 &&
+                this.costosAdministrativosList.length > 0 &&
+                this.costosDirectosList.length > 0 &&
+                this.costosIndirectosList.length > 0 &&
+                this.ingresosList.length > 0
+              ){
+                this.project.canBeEvaluated = true;
+                this.projectService.editProject(this.project)
+              }
+            }else{
+              this.project = {
+                name : "",
+                canBeEvaluated : false,
+                tmar : 0,
+                totalActivosFijos : 0,
+                porcentajeCapitalPropio : 0,
+                totalCapitalPropio : 0,
+                porcentajePrestamo : 0,
+                totalPrestamo : 0,
+                tasaInteresBanco : 0,
+                tiempoPrestamo : 0,
+                tasaImpuesto : 0,
+              };
+            }
+          }
+        )
     }
   }
 
-  onSubmit() {
+  onSubmit() { // Funcion lista
     if (this.project.name == "") {
       this.utilityService.showNotification(4, "Nombre de proyecto es obligatorio")
     } else {
       if (this.project.id != null){
-        this.projectService.editProject(this.project);
-        this.utilityService.showNotification(2, "Proyecto editado con exito")
+        this.projectService.editarProject(this.project).subscribe(
+          res => {
+            console.log(res);
+            this.utilityService.showNotification(2, "Proyecto editado con exito")
+          }
+        );
+        //this.projectService.editProject(this.project);
+        
       }else{
-        this.projectService.addProject(this.project);
-        this.utilityService.showNotification(2, "Proyecto creado con exito");
-        this.router.navigate(['/cruds/projects/edit', this.project.id])
+        this.projectService.agregarProject(this.project).subscribe(
+          res => {
+            console.log(res);
+            this.project = res;
+            this.utilityService.showNotification(2, "Proyecto creado con exito");
+            this.router.navigate(['/cruds/projects/edit', this.project.id])
+          }
+        );
+        //this.projectService.addProject(this.project);
       }
     }
   }
@@ -145,7 +162,8 @@ export class NewComponent {
   evaluateProject(){
     this.router.navigate(['/cruds/projects/evaluate', this.project.id])
   }
-  onCapitalChange(){
+
+  onCapitalChange(){ // Funcion lista
     if (this.createdState){
       this.projectService.actualizarValores(this.project);
       this.ngOnInit();
