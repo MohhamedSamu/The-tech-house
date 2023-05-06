@@ -23,6 +23,10 @@ export class ListComponent {
   goTo(id:number){
     this.router.navigate(['/cruds/projects/edit', id])
   }
+
+  evaluateProject(id){
+    this.router.navigate(['/cruds/projects/evaluate', id])
+  }
   
   deleteProj(id:number){
     this.projectService.deleteProject(id);

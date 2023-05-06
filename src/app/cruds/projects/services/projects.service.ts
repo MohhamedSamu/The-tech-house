@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Project } from 'app/interfaces/project';
 import { ActivosFijosService } from './activos-fijos.service';
+import { CostoAdministrativoService } from './costo-administrativo.service';
+import { CostoDirectoService } from './costo-directo.service';
+import { CostoIndirectoService } from './costo-indirecto.service';
+import { IngresosService } from './ingresos.service';
+import { FullProjectInfo } from 'app/interfaces/full-project-info';
 
 const TABLE_NAME = "projects";
 
@@ -13,7 +18,13 @@ export class ProjectsService
 
   projects: Project[] = [];
 
-  constructor(private activosFijosService: ActivosFijosService) { }
+  constructor(
+    private activosFijosService: ActivosFijosService,
+    private CostoAdministrativoService: CostoAdministrativoService,
+    private CostoDirectoService: CostoDirectoService,
+    private CostoIndirectoService: CostoIndirectoService,
+    private IngresosService: IngresosService,
+    ) { }
 
   addProject(newProject: Project): void
   {
@@ -34,6 +45,20 @@ export class ProjectsService
     return this.projects.filter((proj) => proj.id == id)[0];
   }
 
+  getFullProjectInfoById(id: number): FullProjectInfo
+  {
+    let fullProj : FullProjectInfo = {
+      project: this.getProjectById(id),
+      activosFijosList:this.activosFijosService.getActivosFijos(id),
+      costosAdministrativosList: this.CostoAdministrativoService.getCostoAdministrativos(id),
+      costosDirectosList: this.CostoDirectoService.getCostoDirectos(id),
+      costosIndirectosList: this.CostoIndirectoService.getActivosFijos(id),
+      ingresosList: this.IngresosService.getIngresos(id)
+    };
+    return fullProj;
+  }
+
+
   editProject(projectToEdit: Project): void
   {
     this.projects = this.getItem();
@@ -51,13 +76,23 @@ export class ProjectsService
     this.projects = this.projects.filter((proj) => proj.id != projectIdToDelete);
     this.setItem(this.projects);
     this.activosFijosService.deleteAllActivosFijoByProj(projectIdToDelete);
+    this.CostoAdministrativoService.deleteAllCostoAdministrativoByProj(projectIdToDelete);
+    this.CostoDirectoService.deleteAllCostoDirectoByProj(projectIdToDelete);
+    this.CostoIndirectoService.deleteAllActivosFijoByProj(projectIdToDelete);
+    this.IngresosService.deleteAllIngresoByProj(projectIdToDelete);
   }
 
   actualizarValores(project:Project):void{
     project.totalActivosFijos = this.activosFijosService.getActivosFijos(project.id).reduce((a, b) => a + (b['valor'] || 0), 0);
-    project.porcentajeCapitalPropio = project.totalCapitalPropio / project.totalActivosFijos;
-    project.totalPrestamo = project.totalActivosFijos - project.totalCapitalPropio;
-    project.porcentajePrestamo = project.totalPrestamo / project.totalActivosFijos;
+    if (project.totalActivosFijos > project.totalCapitalPropio){
+      project.porcentajeCapitalPropio = project.totalCapitalPropio / project.totalActivosFijos;
+      project.totalPrestamo = project.totalActivosFijos - project.totalCapitalPropio;
+      project.porcentajePrestamo = project.totalPrestamo / project.totalActivosFijos;
+    }else{
+      project.porcentajeCapitalPropio = 1;
+      project.totalPrestamo = 0;
+      project.porcentajePrestamo = 0;
+    }
     this.editProject(project);
   }
 

@@ -1,8 +1,8 @@
 export interface Ingreso {
   id?: number,
   name: string,
-  categoria:number, //1-optimista 2-pesimista
-  valor: number,
+  valorOptimista: number,
+  valorPesimista: number,
   projectId: number,
   incrementoAnual: number
 }

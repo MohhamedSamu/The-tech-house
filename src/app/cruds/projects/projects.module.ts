@@ -15,11 +15,13 @@ import {MatTabsModule} from '@angular/material/tabs';
 
 
 import { FormsModule } from '@angular/forms';
+import { EvaluateComponent } from './evaluate/evaluate.component';
 
 @NgModule({
   declarations: [
     NewComponent,
-    ListComponent
+    ListComponent,
+    EvaluateComponent
   ],
   imports: [
     CommonModule,

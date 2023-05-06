@@ -59,14 +59,15 @@
                       {{ project.totalPrestamo }}
                     </td>
                     <td>
-                      {{ project.tmar }}
+                      {{ project.tmar }}%
                     </td>
                     <td>
-                      {{ project.tasaInteresBanco }}
+                      {{ project.tasaInteresBanco }}%
                     </td>
                     <td>
                       <button mat-raised-button type="submit" class="btn btn-danger" (click)="deleteProj(project.id)">Eliminar</button>
                       <button mat-raised-button type="submit" class="btn btn-success" (click)="goTo(project.id)">Edit</button>
+                      <button mat-raised-button type="submit" class="btn btn-info" *ngIf="project.canBeEvaluated" (click)="evaluateProject(project.id)">Evaluar</button>
                     </td>
                   </tr>
                 </tbody>

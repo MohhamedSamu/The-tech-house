@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Ingreso } from '../../../interfaces/ingreso'
+import { UtilityService } from 'app/cruds/utility.service';
 
 const TABLE_NAME = "ingresos";
 
@@ -9,7 +10,7 @@ const TABLE_NAME = "ingresos";
 export class IngresosService {
   ingresos: Ingreso[] = [];
 
-  constructor() { }
+  constructor(private utilityService: UtilityService) { }
 
   addIngreso(newIngreso: Ingreso): void
   {

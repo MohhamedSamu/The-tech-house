@@ -3,15 +3,17 @@
     <div class="row">
       <div class="col-md-12">
         <button mat-raised-button class="btn btn-info pull-right" routerLink="/cruds/projects">Regresar</button>
+        <button *ngIf="project.canBeEvaluated" mat-raised-button class="btn btn-success pull-right" (click)="evaluateProject()">Evaluar proyecto</button>
       </div>
     </div>
     <div class="row">
       <div class="col-md-12">
         <div class="card">
-          <div class="card-header card-header-danger">
+          <div class="card-header card-header-danger" style="display: flex; justify-content: space-between; align-items: center;">
             <h4 class="card-title">Proyecto</h4>
+            <button mat-raised-button class="btn btn-success pull-right" (click)="colapseState = !colapseState" > {{ colapseState ? '+' : '-'  }} </button>
           </div>
-          <div class="card-body">
+          <div class="card-body" *ngIf="!colapseState">
             <form>
               <div class="row">
                 <div class="col-md-6">
@@ -21,43 +23,50 @@
                 </div>
                 <div class="col-md-6">
                   <mat-form-field class="example-full-width">
-                    <input type="number" name="totalCapitalPropio" matInput placeholder="Total Capital Propio" [(ngModel)]="project.totalCapitalPropio">
+                    <input type="number" name="totalCapitalPropio" matInput placeholder="Total Capital Propio"
+                      [(ngModel)]="project.totalCapitalPropio" (change)="onCapitalChange()">
                   </mat-form-field>
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-6">
                   <mat-form-field class="example-full-width">
-                    <input type="number" name="tiempoPrestamo" matInput placeholder="Tiempo Prestamo" [(ngModel)]="project.tiempoPrestamo">
+                    <input type="number" name="tiempoPrestamo" matInput placeholder="Tiempo Prestamo"
+                      [(ngModel)]="project.tiempoPrestamo">
                   </mat-form-field>
                 </div>
                 <div class="col-md-6">
                   <mat-form-field class="example-full-width">
-                    <input type="number" name="tasaInteresBanco" matInput placeholder="Tasa Interes Banco" [(ngModel)]="project.tasaInteresBanco">
-                  </mat-form-field>
-                </div>
-              </div>
-              <div class="row" *ngIf="createdState">
-                <div class="col-md-6">
-                  <mat-form-field class="example-full-width">
-                    <input name="totalActivosFijos" matInput placeholder="Total Activos Fijos" [(ngModel)]="project.totalActivosFijos" disabled>
-                  </mat-form-field>
-                </div>
-                <div class="col-md-6">
-                  <mat-form-field class="example-full-width">
-                    <input name="porcentajeCapitalPropio" matInput placeholder="Porcentaje Capital Propio" [(ngModel)]="project.porcentajeCapitalPropio" disabled>
+                    <input type="number" name="tasaInteresBanco" matInput placeholder="Tasa Interes Banco"
+                      [(ngModel)]="project.tasaInteresBanco">
                   </mat-form-field>
                 </div>
               </div>
               <div class="row" *ngIf="createdState">
                 <div class="col-md-6">
                   <mat-form-field class="example-full-width">
-                    <input type="number" name="TotalPrestamo" matInput placeholder="Total Prestamo" [(ngModel)]="project.totalPrestamo" disabled>
+                    <input name="totalActivosFijos" matInput placeholder="Total Activos Fijos"
+                      [(ngModel)]="project.totalActivosFijos" disabled>
                   </mat-form-field>
                 </div>
                 <div class="col-md-6">
                   <mat-form-field class="example-full-width">
-                    <input name="porcentajePrestamo" matInput placeholder="Porcentaje Prestamo" [(ngModel)]="project.porcentajePrestamo" disabled>
+                    <input name="porcentajeCapitalPropio" matInput placeholder="Porcentaje Capital Propio"
+                      [(ngModel)]="tempPorcentajePropio" disabled>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row" *ngIf="createdState">
+                <div class="col-md-6">
+                  <mat-form-field class="example-full-width">
+                    <input type="number" name="TotalPrestamo" matInput placeholder="Total Prestamo"
+                      [(ngModel)]="project.totalPrestamo" disabled>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-6">
+                  <mat-form-field class="example-full-width">
+                    <input name="porcentajePrestamo" matInput placeholder="Porcentaje Prestamo"
+                      [(ngModel)]="tempPorcentajeBanco" disabled>
                   </mat-form-field>
                 </div>
               </div>
@@ -65,6 +74,8 @@
                 (click)="onSubmit()">Guardar</button>
               <div class="clearfix"></div>
             </form>
+          </div>
+          <div class="card-body" *ngIf="colapseState">
           </div>
         </div>
       </div>
@@ -92,19 +103,22 @@
                       </div>
                       <div class="col-md-6">
                         <mat-form-field class="example-full-width">
-                          <input name="valor" type="number" min="0" matInput placeholder="Valor" [(ngModel)]="newActivoFijo.valor">
+                          <input name="valor" type="number" min="0" matInput placeholder="Valor"
+                            [(ngModel)]="newActivoFijo.valor">
                         </mat-form-field>
                       </div>
                     </div>
                     <div class="row">
                       <div class="col-md-6">
                         <mat-form-field class="example-full-width">
-                          <input name="porcentajeDepreciacion" type="number" min="0" matInput placeholder="Porcentaje de Depreciacion" [(ngModel)]="newActivoFijo.porcentajeDepreciacion">
+                          <input name="porcentajeDepreciacion" type="number" min="0" matInput
+                            placeholder="Porcentaje de Depreciacion" [(ngModel)]="newActivoFijo.porcentajeDepreciacion">
                         </mat-form-field>
                       </div>
                       <div class="col-md-6">
                         <mat-form-field class="example-full-width">
-                          <input name="VidaUtil" type="number" min="0" matInput placeholder="Vida Util" [(ngModel)]="newActivoFijo.vidaUtil">
+                          <input name="VidaUtil" type="number" min="0" matInput placeholder="Vida Util"
+                            [(ngModel)]="newActivoFijo.vidaUtil">
                         </mat-form-field>
                       </div>
                     </div>
@@ -153,8 +167,10 @@
                       {{ activo.vidaUtil }}
                     </td>
                     <td>
-                      <button mat-raised-button type="submit" class="btn btn-danger" (click)="deleteActivo(activo.id)">Borrar</button>
-                      <button mat-raised-button type="submit" class="btn btn-success" (click)="editActivo(activo.id)">Edit</button>
+                      <button mat-raised-button type="submit" class="btn btn-danger"
+                        (click)="deleteActivo(activo.id)">Borrar</button>
+                      <button mat-raised-button type="submit" class="btn btn-success"
+                        (click)="editActivo(activo.id)">Edit</button>
                     </td>
                   </tr>
                 </tbody>
@@ -163,10 +179,354 @@
           </div>
         </div>
       </mat-tab>
-      <mat-tab label="Costos Administrativos">Content 2</mat-tab>
-      <mat-tab label="Costos Directos">Content 3</mat-tab>
-      <mat-tab label="Costos Indirectos">Content 3</mat-tab>
-      <mat-tab label="Ingresos">Content 3</mat-tab>
+      <mat-tab label="Costos Administrativos">
+        <br>
+        <br>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header card-header-danger">
+                  <h4 class="card-title">Lista de todos los costos Administrativos del proyecto</h4>
+                </div>
+                <div class="card-body">
+                  <form>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <mat-form-field class="example-full-width">
+                          <input name="Nombre" matInput placeholder="Nombre" [(ngModel)]="newCostoAdministrativo.name">
+                        </mat-form-field>
+                      </div>
+                      <div class="col-md-6">
+                        <mat-form-field class="example-full-width">
+                          <input name="valor" type="number" min="0" matInput placeholder="Valor"
+                            [(ngModel)]="newCostoAdministrativo.valor">
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <mat-form-field class="example-full-width">
+                          <input name="incrementoAnual" type="number" min="0" matInput placeholder="incremento Anual"
+                            [(ngModel)]="newCostoAdministrativo.incrementoAnual">
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <button mat-raised-button type="submit" class="btn btn-danger pull-right"
+                      (click)="clearNewCostoAdministrativo()">Limpiar</button>
+                    <button mat-raised-button type="submit" class="btn btn-danger pull-right"
+                      (click)="onSubmitNewCostoAdministrativo()">Guardar</button>
+                    <div class="clearfix"></div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row" *ngIf="costosAdministrativosList.length > 0">
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead class="">
+                  <th>
+                    Nombre
+                  </th>
+                  <th>
+                    Valor
+                  </th>
+                  <th>
+                    Incremento Anual
+                  </th>
+                  <th>
+                    Acciones
+                  </th>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let costoAdmin of this.costosAdministrativosList">
+                    <td>
+                      {{ costoAdmin.name }}
+                    </td>
+                    <td>
+                      {{ costoAdmin.valor }}
+                    </td>
+                    <td>
+                      {{ costoAdmin.incrementoAnual }}
+                    </td>
+                    <td>
+                      <button mat-raised-button type="submit" class="btn btn-danger"
+                        (click)="deleteCostoAdmin(costoAdmin.id)">Borrar</button>
+                      <button mat-raised-button type="submit" class="btn btn-success"
+                        (click)="editCostoAdmin(costoAdmin.id)">Edit</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+      <mat-tab label="Costos Directos">
+        <br>
+        <br>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header card-header-danger">
+                  <h4 class="card-title">Lista de todos los costos directos del proyecto</h4>
+                </div>
+                <div class="card-body">
+                  <form>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <mat-form-field class="example-full-width">
+                          <input name="Nombre" matInput placeholder="Nombre" [(ngModel)]="newCostoDirecto.name">
+                        </mat-form-field>
+                      </div>
+                      <div class="col-md-6">
+                        <mat-form-field class="example-full-width">
+                          <input name="valor" type="number" min="0" matInput placeholder="Valor"
+                            [(ngModel)]="newCostoDirecto.valor">
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <mat-form-field class="example-full-width">
+                          <input name="incrementoAnual" type="number" min="0" matInput placeholder="incrementoAnual"
+                            [(ngModel)]="newCostoDirecto.incrementoAnual">
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <button mat-raised-button type="submit" class="btn btn-danger pull-right"
+                      (click)="clearNewCostoDirecto()">Limpiar</button>
+                    <button mat-raised-button type="submit" class="btn btn-danger pull-right"
+                      (click)="onSubmitNewCostoDirecto()">Guardar</button>
+                    <div class="clearfix"></div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row" *ngIf="costosDirectosList.length > 0">
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead class="">
+                  <th>
+                    Nombre
+                  </th>
+                  <th>
+                    Valor
+                  </th>
+                  <th>
+                    Incremento Anual
+                  </th>
+                  <th>
+                    Acciones
+                  </th>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let costoDirecto of this.costosDirectosList">
+                    <td>
+                      {{ costoDirecto.name }}
+                    </td>
+                    <td>
+                      {{ costoDirecto.valor }}
+                    </td>
+                    <td>
+                      {{ costoDirecto.incrementoAnual }}
+                    </td>
+                    <td>
+                      <button mat-raised-button type="submit" class="btn btn-danger"
+                        (click)="editNewCostoDirecto(costoDirecto.id)">Borrar</button>
+                      <button mat-raised-button type="submit" class="btn btn-success"
+                        (click)="deleteCostoDirecto(costoDirecto.id)">Edit</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+      <mat-tab label="Costos Indirectos">
+        <br>
+        <br>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header card-header-danger">
+                  <h4 class="card-title">Lista de todos los Costos Indirectos del proyecto</h4>
+                </div>
+                <div class="card-body">
+                  <form>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <mat-form-field class="example-full-width">
+                          <input name="Nombre" matInput placeholder="Nombre" [(ngModel)]="newCostoIndirecto.name">
+                        </mat-form-field>
+                      </div>
+                      <div class="col-md-6">
+                        <mat-form-field class="example-full-width">
+                          <input name="valor" type="number" min="0" matInput placeholder="Valor"
+                            [(ngModel)]="newCostoIndirecto.valor">
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <mat-form-field class="example-full-width">
+                          <input name="incrementoAnual" type="number" min="0" matInput placeholder="incremento Anual"
+                            [(ngModel)]="newCostoIndirecto.incrementoAnual">
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <button mat-raised-button type="submit" class="btn btn-danger pull-right"
+                      (click)="clearNewCostoIndirecto()">Limpiar</button>
+                    <button mat-raised-button type="submit" class="btn btn-danger pull-right"
+                      (click)="onSubmitCostoIndirecto()">Guardar</button>
+                    <div class="clearfix"></div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row" *ngIf="costosIndirectosList.length > 0">
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead class="">
+                  <th>
+                    Nombre
+                  </th>
+                  <th>
+                    Valor
+                  </th>
+                  <th>
+                    Incremento Anual
+                  </th>
+                  <th>
+                    Acciones
+                  </th>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let costoIndirecto of this.costosIndirectosList">
+                    <td>
+                      {{ costoIndirecto.name }}
+                    </td>
+                    <td>
+                      {{ costoIndirecto.valor }}
+                    </td>
+                    <td>
+                      {{ costoIndirecto.incrementoAnual }}
+                    </td>
+                    <td>
+                      <button mat-raised-button type="submit" class="btn btn-danger"
+                        (click)="deleteCostoIndirecto(costoIndirecto.id)">Borrar</button>
+                      <button mat-raised-button type="submit" class="btn btn-success"
+                        (click)="editCostoIndirecto(costoIndirecto.id)">Edit</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+      <mat-tab label="Ingresos">
+        <br>
+        <br>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header card-header-danger">
+                  <h4 class="card-title">Lista de todos los Ingresos del proyecto</h4>
+                </div>
+                <div class="card-body">
+                  <form>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <mat-form-field class="example-full-width">
+                          <input name="Nombre" matInput placeholder="Nombre" [(ngModel)]="newIngreso.name">
+                        </mat-form-field>
+                      </div>
+                      <div class="col-md-6">
+                        <mat-form-field class="example-full-width">
+                          <input name="incrementoAnual" type="number" min="0" matInput placeholder="incremento Anual"
+                            [(ngModel)]="newIngreso.incrementoAnual">
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <mat-form-field class="example-full-width">
+                          <input name="valorOptimista" type="number" min="0" matInput placeholder="Valor Optimista"
+                            [(ngModel)]="newIngreso.valorOptimista">
+                        </mat-form-field>
+                      </div>
+                      <div class="col-md-6">
+                        <mat-form-field class="example-full-width">
+                          <input name="valorPesimista" type="number" min="0" matInput placeholder="Valor Pesimista"
+                            [(ngModel)]="newIngreso.valorPesimista">
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <button mat-raised-button type="submit" class="btn btn-danger pull-right"
+                      (click)="clearNewIngreso()">Limpiar</button>
+                    <button mat-raised-button type="submit" class="btn btn-danger pull-right"
+                      (click)="onSubmitIngreso()">Guardar</button>
+                    <div class="clearfix"></div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row" *ngIf="ingresosList.length > 0">
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead class="">
+                  <th>
+                    Nombre
+                  </th>
+                  <th>
+                    Valor optimista
+                  </th>
+                  <th>
+                    Valor pesimista
+                  </th>
+                  <th>
+                    Incremento Anual
+                  </th>
+                  <th>
+                    Acciones
+                  </th>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let ingreso of this.ingresosList">
+                    <td>
+                      {{ ingreso.name }}
+                    </td>
+                    <td>
+                      {{ ingreso.valorOptimista }}
+                    </td>
+                    <td>
+                      {{ ingreso.valorPesimista }}
+                    </td>
+                    <td>
+                      {{ ingreso.incrementoAnual }}
+                    </td>
+                    <td>
+                      <button mat-raised-button type="submit" class="btn btn-danger"
+                        (click)="deleteIngreso(ingreso.id)">Borrar</button>
+                      <button mat-raised-button type="submit" class="btn btn-success"
+                        (click)="editIngreso(ingreso.id)">Edit</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
     </mat-tab-group>
   </div>
 </div>

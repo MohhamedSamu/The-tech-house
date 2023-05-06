@@ -1,0 +1,929 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <button mat-raised-button class="btn btn-info pull-right" routerLink="/cruds/projects">Regresar</button>
+        <button mat-raised-button class="btn btn-success pull-right" (click)="editProject()">Editar proyecto</button>
+      </div>
+    </div>
+    <div class="alert alert-danger" *ngIf="projectInfo.project.tmar == 0 || projectInfo.project.tasaImpuesto == 0">
+      <button mat-button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <i class="material-icons">close</i>
+      </button>
+      <span>
+        <b> ATENCION - </b> Para poder mostrar los resultados de flujo de fondos primero debes de ingresar : {{
+        projectInfo.project.tmar == 0 ? 'TMAR' : '' }} {{ projectInfo.project.tasaImpuesto == 0 ? 'Tasa Impuesto' : ''
+        }}</span>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header card-header-danger"
+            style="display: flex; justify-content: space-between; align-items: center;">
+            <h4 class="card-title">Informacion general del proyecto</h4>
+            <button mat-raised-button class="btn btn-success pull-right" (click)="colapseState = !colapseState"> {{
+              colapseState ? '+' : '-' }} </button>
+          </div>
+          <div class="card-body" *ngIf="!colapseState">
+            <form>
+              <div class="row">
+                <div class="col-md-6">
+                  <mat-form-field class="example-full-width">
+                    <input name="tmar" matInput placeholder="tmar" [(ngModel)]="projectInfo.project.tmar"
+                      (change)="onProjChange()">
+                  </mat-form-field>
+                </div>
+                <div class="col-md-6">
+                  <mat-form-field class="example-full-width">
+                    <input type="number" name="tasaImpuesto" matInput placeholder="tasaImpuesto"
+                      [(ngModel)]="projectInfo.project.tasaImpuesto" (change)="onProjChange()">
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <mat-form-field class="example-full-width">
+                    <input name="projName" matInput placeholder="Nombre" [(ngModel)]="projectInfo.project.name"
+                      disabled>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-6">
+                  <mat-form-field class="example-full-width">
+                    <input type="number" name="totalCapitalPropio" matInput placeholder="Total Capital Propio"
+                      [(ngModel)]="projectInfo.project.totalCapitalPropio" disabled>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <mat-form-field class="example-full-width">
+                    <input type="number" name="tiempoPrestamo" matInput placeholder="Tiempo Prestamo"
+                      [(ngModel)]="projectInfo.project.tiempoPrestamo" disabled>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-6">
+                  <mat-form-field class="example-full-width">
+                    <input type="number" name="tasaInteresBanco" matInput placeholder="Tasa Interes Banco"
+                      [(ngModel)]="projectInfo.project.tasaInteresBanco" disabled>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <mat-form-field class="example-full-width">
+                    <input name="totalActivosFijos" matInput placeholder="Total Activos Fijos"
+                      [(ngModel)]="projectInfo.project.totalActivosFijos" disabled>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-6">
+                  <mat-form-field class="example-full-width">
+                    <input name="porcentajeCapitalPropio" matInput placeholder="Porcentaje Capital Propio"
+                      [(ngModel)]="tempPorcentajePropio" disabled>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <mat-form-field class="example-full-width">
+                    <input type="number" name="TotalPrestamo" matInput placeholder="Total Prestamo"
+                      [(ngModel)]="projectInfo.project.totalPrestamo" disabled>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-6">
+                  <mat-form-field class="example-full-width">
+                    <input name="porcentajePrestamo" matInput placeholder="Porcentaje Prestamo"
+                      [(ngModel)]="tempPorcentajeBanco" disabled>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="clearfix"></div>
+            </form>
+          </div>
+          <div class="card-body" *ngIf="colapseState">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <mat-tab-group mat-stretch-tabs="true">
+      <mat-tab label="COSTO DE FINANCIAMIENTO">
+        <br>
+        <br>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header card-header-danger">
+                  <h4 class="card-title">Tabla de amortizacion sobre el financiamiento </h4>
+                </div>
+                <div class="card-body">
+                  <div class="row" *ngIf="cuotasFinanciamiento.length > 0">
+                    <div class="table-responsive">
+                      <table class="table table-hover">
+                        <thead class="">
+                          <th>
+                            Año
+                          </th>
+                          <th>
+                            Saldo Inicial
+                          </th>
+                          <th>
+                            Costo Anual
+                          </th>
+                          <th>
+                            Intereses
+                          </th>
+                          <th>
+                            Amortización
+                          </th>
+                          <th>
+                            Saldo Final
+                          </th>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>
+                              0
+                            </td>
+                            <td>
+                            <td>
+                              {{ cuotasFinanciamiento[0].saldoInicial }}
+                            </td>
+                            <td>
+                              --
+                            </td>
+                            <td>
+                              --
+                            </td>
+                            <td>
+                              {{ cuotasFinanciamiento[0].saldoInicial }}
+                            </td>
+                          </tr>
+                          <tr *ngFor="let cuota of cuotasFinanciamiento">
+                            <td>
+                              {{ cuota.n }}
+                            </td>
+                            <td>
+                              {{ cuota.saldoInicial }}
+                            </td>
+                            <td>
+                              {{ cuota.costoAnual }}
+                            </td>
+                            <td>
+                              {{ cuota.intereses }}
+                            </td>
+                            <td>
+                              {{ cuota.amortizacion }}
+                            </td>
+                            <td>
+                              {{ cuota.saldoFinal }}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+      <mat-tab label="COSTOS DE PRODUCCION">
+        <br>
+        <br>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header card-header-danger">
+                  <h4 class="card-title">Tabla de costos de produccion</h4>
+                </div>
+                <div class="card-body">
+                  <div class="row" *ngIf="costosDeProduccion.totalCostosProduccion.length > 0">
+                    <div class="table-responsive">
+                      <table class="table table-hover">
+                        <thead class="">
+                          <th>
+                            Concepto
+                          </th>
+                          <th>
+                            Incremento Anual
+                          </th>
+                          <th *ngFor="let num of anios">
+                            {{ num }}
+                          </th>
+                        </thead>
+                        <tbody>
+                          <tr style="background-color: rgb(222, 222, 222);">
+                            <td style="font-weight: 600;">
+                              Costos Directos
+                            </td>
+                            <td>
+                            </td>
+                            <td *ngFor="let num of anios">
+                            </td>
+                          </tr>
+                          <tr style="background-color: rgb(222, 222, 222);"
+                            *ngFor="let costo of costosDeProduccion.costosDirectos.costos">
+                            <td>
+                              {{ costo.name }}
+                            </td>
+                            <td>
+                              {{ costo.incremento }}%
+                            </td>
+                            <td *ngFor="let anualidad of costo.anualidades">
+                              {{ anualidad | number : '1.2-2' }}
+                            </td>
+                          </tr>
+                          <tr style="background-color: rgb(222, 222, 222); font-weight: 600;">
+                            <td>
+                              Total de Costos Directos
+                            </td>
+                            <td>
+                            </td>
+                            <td *ngFor="let total of costosDeProduccion.costosDirectos.totales">
+                              {{ total | number : '1.2-2' }}
+                            </td>
+                          </tr>
+
+                          <tr>
+                            <td style="font-weight: 600;">
+                              Costos Indirectos
+                            </td>
+                            <td>
+                            </td>
+                            <td *ngFor="let num of anios">
+                            </td>
+                          </tr>
+                          <tr *ngFor="let costo of costosDeProduccion.costosIndirectos.costos">
+                            <td>
+                              {{ costo.name }}
+                            </td>
+                            <td>
+                              {{ costo.incremento }}%
+                            </td>
+                            <td *ngFor="let anualidad of costo.anualidades">
+                              {{ anualidad | number : '1.2-2' }}
+                            </td>
+                          </tr>
+                          <tr style="font-weight: 600;">
+                            <td>
+                              Total de Costos Indirectos
+                            </td>
+                            <td>
+                            </td>
+                            <td *ngFor="let total of costosDeProduccion.costosIndirectos.totales">
+                              {{ total | number : '1.2-2' }}
+                            </td>
+                          </tr>
+                          <tr style="font-weight: 600; background-color: rgb(222, 222, 222);">
+                            <td>
+                              Total de Costos de Producción
+                            </td>
+                            <td>
+                            </td>
+                            <td *ngFor="let total of costosDeProduccion.totalCostosProduccion">
+                              {{ total | number : '1.2-2' }}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+      <mat-tab label="DEPRECIACIÓN">
+        <br>
+        <br>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header card-header-danger">
+                  <h4 class="card-title">Tabla de depreciacion de activos</h4>
+                </div>
+                <div class="card-body">
+                  <div class="row" *ngIf="costosDepreciacion.totales.length > 0">
+                    <div class="table-responsive">
+                      <table class="table table-hover">
+                        <thead class="">
+                          <th>
+                            Concepto
+                          </th>
+                          <th>
+                            Porcentaje de depreciacion
+                          </th>
+                          <th *ngFor="let num of anios">
+                            {{ num }}
+                          </th>
+                          <th *ngFor="let total of costosDepreciacion.totalesSalvamento">
+                            Valor rescate año {{ total.n }}
+                          </th>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let activo of costosDepreciacion.activos">
+                            <td style="font-weight: 600;">
+                              {{ activo.name }}
+                            </td>
+                            <td>
+                              {{ activo.porcentajeDepreciacion }}%
+                            </td>
+                            <td *ngFor="let anualidad of activo.anualidades">
+                              {{ anualidad | number : '1.2-2' }}
+                            </td>
+                            <td *ngFor="let total of costosDepreciacion.totalesSalvamento">
+                              <b *ngIf="total.n == activo.vidaUtil">{{ activo.valorRescate | number : '1.2-2' }}</b>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="font-weight: 600;">
+                              Totales
+                            </td>
+                            <td>
+                            </td>
+                            <td *ngFor="let total of costosDepreciacion.totales">
+                              {{ total | number : '1.2-2' }}
+                            </td>
+                            <td *ngFor="let total of costosDepreciacion.totalesSalvamento">
+                              {{ total.valor | number : '1.2-2' }}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+      <mat-tab label="COSTOS DE ADMINISTRACIÓN">
+        <br>
+        <br>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header card-header-danger">
+                  <h4 class="card-title">Tabla de costos de administracion</h4>
+                </div>
+                <div class="card-body">
+                  <div class="row" *ngIf="costosDeAdministracion.totales.length > 0">
+                    <div class="table-responsive">
+                      <table class="table table-hover">
+                        <thead class="">
+                          <th>
+                            Concepto
+                          </th>
+                          <th>
+                            Incremento Anual
+                          </th>
+                          <th *ngFor="let num of anios">
+                            {{ num }}
+                          </th>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let costo of costosDeAdministracion.costos">
+                            <td>
+                              {{ costo.name }}
+                            </td>
+                            <td>
+                              {{ costo.incremento }}%
+                            </td>
+                            <td *ngFor="let anualidad of costo.anualidades">
+                              {{ anualidad | number : '1.2-2' }}
+                            </td>
+                          </tr>
+                          <tr style="font-weight: 600;">
+                            <td>
+                              Total de Costos Indirectos
+                            </td>
+                            <td>
+                            </td>
+                            <td *ngFor="let total of costosDeAdministracion.totales">
+                              {{ total | number : '1.2-2' }}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+      <mat-tab label="INGRESOS">
+        <br>
+        <br>
+        <mat-tab-group mat-stretch-tabs="true">
+          <mat-tab label="OPTIMISTAS">
+            <br>
+            <br>
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="card">
+                    <div class="card-header card-header-danger">
+                      <h4 class="card-title">Tabla de ingresos siendo optimistas</h4>
+                    </div>
+                    <div class="card-body">
+                      <div class="row" *ngIf="ingresosTotales.ingresosOptimistas.totales.length > 0">
+                        <div class="table-responsive">
+                          <table class="table table-hover">
+                            <thead class="">
+                              <th>
+                                Concepto
+                              </th>
+                              <th>
+                                Incremento Anual
+                              </th>
+                              <th *ngFor="let num of anios">
+                                {{ num }}
+                              </th>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let ingreso of ingresosTotales.ingresosOptimistas.ingresos">
+                                <td>
+                                  {{ ingreso.name }}
+                                </td>
+                                <td>
+                                  {{ ingreso.incremento }}%
+                                </td>
+                                <td *ngFor="let anualidad of ingreso.anualidades">
+                                  {{ anualidad | number : '1.2-2' }}
+                                </td>
+                              </tr>
+                              <tr style="font-weight: 600;">
+                                <td>
+                                  Total de ingresos optimistas
+                                </td>
+                                <td>
+                                </td>
+                                <td *ngFor="let total of ingresosTotales.ingresosOptimistas.totales">
+                                  {{ total | number : '1.2-2' }}
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </mat-tab>
+          <mat-tab label="PROMEDIO">
+            <br>
+            <br>
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="card">
+                    <div class="card-header card-header-danger">
+                      <h4 class="card-title">Tabla de ingresos teniendo en cuenta un promedio</h4>
+                    </div>
+                    <div class="card-body">
+                      <div class="row" *ngIf="ingresosTotales.ingresosPromedios.totales.length > 0">
+                        <div class="table-responsive">
+                          <table class="table table-hover">
+                            <thead class="">
+                              <th>
+                                Concepto
+                              </th>
+                              <th>
+                                Incremento Anual
+                              </th>
+                              <th *ngFor="let num of anios">
+                                {{ num }}
+                              </th>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let ingreso of ingresosTotales.ingresosPromedios.ingresos">
+                                <td>
+                                  {{ ingreso.name }}
+                                </td>
+                                <td>
+                                  {{ ingreso.incremento }}%
+                                </td>
+                                <td *ngFor="let anualidad of ingreso.anualidades">
+                                  {{ anualidad | number : '1.2-2' }}
+                                </td>
+                              </tr>
+                              <tr style="font-weight: 600;">
+                                <td>
+                                  Total de ingresos promedios
+                                </td>
+                                <td>
+                                </td>
+                                <td *ngFor="let total of ingresosTotales.ingresosPromedios.totales">
+                                  {{ total | number : '1.2-2' }}
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </mat-tab>
+          <mat-tab label="PESIMISTAS">
+            <br>
+            <br>
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="card">
+                    <div class="card-header card-header-danger">
+                      <h4 class="card-title">Tabla de ingresos pesimistas</h4>
+                    </div>
+                    <div class="card-body">
+                      <div class="row" *ngIf="ingresosTotales.ingresosPesimistas.totales.length > 0">
+                        <div class="table-responsive">
+                          <table class="table table-hover">
+                            <thead class="">
+                              <th>
+                                Concepto
+                              </th>
+                              <th>
+                                Incremento Anual
+                              </th>
+                              <th *ngFor="let num of anios">
+                                {{ num }}
+                              </th>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let ingreso of ingresosTotales.ingresosPesimistas.ingresos">
+                                <td>
+                                  {{ ingreso.name }}
+                                </td>
+                                <td>
+                                  {{ ingreso.incremento }}%
+                                </td>
+                                <td *ngFor="let anualidad of ingreso.anualidades">
+                                  {{ anualidad | number : '1.2-2' }}
+                                </td>
+                              </tr>
+                              <tr style="font-weight: 600;">
+                                <td>
+                                  Total de ingresos promedios
+                                </td>
+                                <td>
+                                </td>
+                                <td *ngFor="let total of ingresosTotales.ingresosPesimistas.totales">
+                                  {{ total | number : '1.2-2' }}
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </mat-tab>
+      <mat-tab label="FLUJO DE FONDOS"
+        [disabled]="projectInfo.project.tmar == 0 || projectInfo.project.tasaImpuesto == 0">
+        <br>
+        <br>
+        <mat-tab-group mat-stretch-tabs="true">
+          <mat-tab label="OPTIMISTAS">
+            <br>
+            <br>
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="card">
+                    <div class="card-header card-header-danger">
+                      <h4 class="card-title">Flujo de efectivo con proyecciones optimistas</h4>
+                    </div>
+                    <div class="card-body">
+                      <div class="row">
+                        <div class="table-responsive">
+                          <table class="table table-hover">
+                            <thead class="">
+                              <th>
+                                Concepto
+                              </th>
+                              <th>
+                                0
+                              </th>
+                              <th *ngFor="let num of anios">
+                                {{ num }}
+                              </th>
+                            </thead>
+                            <tbody>
+                              <tr>
+
+                                <td style="font-weight: 600;">
+                                  Ingresos por Venta
+                                </td>
+                                <td>
+                                </td>
+                                <td *ngFor="let ingreso of ingresosTotales.ingresosOptimistas.totales">
+                                  {{ ingreso | number : '1.2-2' }}
+                                </td>
+                              </tr>
+                              <tr>
+                                <td style="font-weight: 600;">
+                                  (-) Costos de producción
+                                </td>
+                                <td>
+                                </td>
+                                <td *ngFor="let costo of costosDeProduccion.totalCostosProduccion">
+                                  {{ costo | number : '1.2-2' }}
+                                </td>
+                              </tr>
+                              <tr style="font-weight: 600;">
+                                <td>
+                                  (=) Utilidad de Operación
+                                </td>
+                                <td>
+                                </td>
+                                <td *ngFor="let utilidad of evaluacion.optimista.flujos.utilidadesOperacion">
+                                  {{ utilidad | number : '1.2-2' }}
+                                </td>
+                              </tr>
+
+                              <tr>
+                                <td style="font-weight: 600;">
+                                  (-) Costos de Administración
+                                </td>
+                                <td>
+                                </td>
+                                <td *ngFor="let costo of costosDeAdministracion.totales">
+                                  {{ costo | number : '1.2-2' }}
+                                </td>
+                              </tr>
+                              <tr>
+                                <td style="font-weight: 600;">
+                                  (-) Costos Financieros (Intereses)
+                                </td>
+                                <td>
+                                </td>
+                                <td *ngFor="let interes of interesesAnuales">
+                                  {{ interes | number : '1.2-2' }}
+                                </td>
+                              </tr>
+                              <tr>
+                                <td style="font-weight: 600;">
+                                  (-) Depreciación
+                                </td>
+                                <td>
+                                </td>
+                                <td *ngFor="let depreciacion of costosDepreciacion.totales">
+                                  {{ depreciacion | number : '1.2-2' }}
+                                </td>
+                              </tr>
+                              <tr style="font-weight: 600;">
+                                <td>
+                                  (=) Utilidad Antes de Impuesto
+                                </td>
+                                <td>
+                                </td>
+                                <td *ngFor="let utilidad of evaluacion.optimista.flujos.utilidadesAntesImpuesto">
+                                  {{ utilidad | number : '1.2-2' }}
+                                </td>
+                              </tr>
+
+                              <tr>
+                                <td style="font-weight: 600;">
+                                  (-) Impuestos {{ projectInfo.project.tasaImpuesto }}%
+                                </td>
+                                <td>
+                                </td>
+                                <td *ngFor="let depreciacion of evaluacion.optimista.flujos.impuestos">
+                                  {{ depreciacion | number : '1.2-2' }}
+                                </td>
+                              </tr>
+                              <tr style="font-weight: 600;">
+                                <td>
+                                  (=) Utilidad Despues de Impuesto
+                                </td>
+                                <td>
+                                </td>
+                                <td *ngFor="let utilidad of evaluacion.optimista.flujos.utilidadesDespImpuesto">
+                                  {{ utilidad | number : '1.2-2' }}
+                                </td>
+                              </tr>
+
+                              <tr>
+                                <td style="font-weight: 600;">
+                                  (+) Depreciación
+                                </td>
+                                <td>
+                                </td>
+                                <td *ngFor="let depreciacion of costosDepreciacion.totales">
+                                  {{ depreciacion | number : '1.2-2' }}
+                                </td>
+                              </tr>
+                              <tr>
+                                <td style="font-weight: 600;">
+                                  (-) Amortización
+                                </td>
+                                <td>
+                                </td>
+                                <td *ngFor="let amortizacion of amortizacionesAnuales">
+                                  {{ amortizacion | number : '1.2-2' }}
+                                </td>
+                              </tr>
+                              <tr>
+                                <td style="font-weight: 600;">
+                                  (+) Valor de Rescate
+                                </td>
+                                <td>
+                                </td>
+                                <td *ngFor="let num of anios">
+                                  <div *ngFor="let salvamento of costosDepreciacion.totalesSalvamento">
+                                    <div *ngIf="salvamento.n == num">
+                                      {{ salvamento.valor | number : '1.2-2' }}
+                                    </div>
+                                  </div>
+                                </td>
+
+                              </tr>
+                              <tr>
+                                <td style="font-weight: 600;">
+                                  Inversión
+                                </td>
+                                <td>
+                                  {{ projectInfo.project.totalCapitalPropio | number : '1.2-2' }}
+                                </td>
+                                <td *ngFor="let num of anios">
+                                </td>
+                              </tr>
+                              <tr style="font-weight: 600;">
+                                <td>
+                                  Flujo Neto de Efectivo
+                                </td>
+                                <td>
+                                </td>
+                                <td *ngFor="let total of evaluacion.optimista.flujos.flujoNetoTotal">
+                                  {{ total | number : '1.2-2' }}
+                                </td>
+                              </tr>
+
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="card">
+                    <div class="card-header card-header-danger">
+                      <h4 class="card-title">ANÁLISIS DE RESULTADOS</h4>
+                    </div>
+                    <div class="card-body">
+                      VPN : {{ this.evaluacion.optimista.desiciones.vpn }} <br><br>
+                      beneficioCosto : {{ this.evaluacion.optimista.desiciones.beneficioCosto }} <br><br>
+                      caue : {{ this.evaluacion.optimista.desiciones.caue }} <br><br>
+                      itr : {{ this.evaluacion.optimista.desiciones.itr }}% <br><br>
+
+                      {{ this.evaluacion.optimista.desiciones.itr >= projectInfo.project.tmar ? 'Acepar' : 'Rechazar' }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </mat-tab>
+          <mat-tab label="PROMEDIO">
+            <br>
+            <br>
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="card">
+                    <div class="card-header card-header-danger">
+                      <h4 class="card-title">Tabla de ingresos teniendo en cuenta un promedio</h4>
+                    </div>
+                    <div class="card-body">
+                      <div class="row" *ngIf="ingresosTotales.ingresosPromedios.totales.length > 0">
+                        <div class="table-responsive">
+                          <table class="table table-hover">
+                            <thead class="">
+                              <th>
+                                Concepto
+                              </th>
+                              <th>
+                                Incremento Anual
+                              </th>
+                              <th *ngFor="let num of anios">
+                                {{ num }}
+                              </th>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let ingreso of ingresosTotales.ingresosPromedios.ingresos">
+                                <td>
+                                  {{ ingreso.name }}
+                                </td>
+                                <td>
+                                  {{ ingreso.incremento }}%
+                                </td>
+                                <td *ngFor="let anualidad of ingreso.anualidades">
+                                  {{ anualidad | number : '1.2-2' }}
+                                </td>
+                              </tr>
+                              <tr style="font-weight: 600;">
+                                <td>
+                                  Total de ingresos promedios
+                                </td>
+                                <td>
+                                </td>
+                                <td *ngFor="let total of ingresosTotales.ingresosPromedios.totales">
+                                  {{ total | number : '1.2-2' }}
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </mat-tab>
+          <mat-tab label="PESIMISTAS">
+            <br>
+            <br>
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="card">
+                    <div class="card-header card-header-danger">
+                      <h4 class="card-title">Tabla de ingresos pesimistas</h4>
+                    </div>
+                    <div class="card-body">
+                      <div class="row" *ngIf="ingresosTotales.ingresosPesimistas.totales.length > 0">
+                        <div class="table-responsive">
+                          <table class="table table-hover">
+                            <thead class="">
+                              <th>
+                                Concepto
+                              </th>
+                              <th>
+                                Incremento Anual
+                              </th>
+                              <th *ngFor="let num of anios">
+                                {{ num }}
+                              </th>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let ingreso of ingresosTotales.ingresosPesimistas.ingresos">
+                                <td>
+                                  {{ ingreso.name }}
+                                </td>
+                                <td>
+                                  {{ ingreso.incremento }}%
+                                </td>
+                                <td *ngFor="let anualidad of ingreso.anualidades">
+                                  {{ anualidad | number : '1.2-2' }}
+                                </td>
+                              </tr>
+                              <tr style="font-weight: 600;">
+                                <td>
+                                  Total de ingresos promedios
+                                </td>
+                                <td>
+                                </td>
+                                <td *ngFor="let total of ingresosTotales.ingresosPesimistas.totales">
+                                  {{ total | number : '1.2-2' }}
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>
