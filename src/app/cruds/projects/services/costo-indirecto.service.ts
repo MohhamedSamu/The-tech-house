@@ -25,6 +25,14 @@ export class CostoIndirectoService {
     return this.costosIndirectos.filter((CostoIndirecto) => CostoIndirecto.projectId == projId);
   }
 
+  cloneActivosFijos(projId : number): void
+  {
+    this.costosIndirectos = this.getItem();
+    let costosIndirectosToClone = this.costosIndirectos.filter((CostoIndirecto) => CostoIndirecto.projectId == projId);
+    this.costosIndirectos = [...this.costosIndirectos, ...costosIndirectosToClone];
+    this.setItem(this.costosIndirectos);
+  }
+
   getActivosFijoById(id: number): CostoIndirecto
   {
     this.costosIndirectos = this.getItem();

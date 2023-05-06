@@ -33,6 +33,20 @@ export class ProjectsService
     this.projects.push(newProject);
     this.setItem(this.projects);
   }
+  cloneProject(projectIdToClone:number): void
+  {
+    this.projects = this.getItem();
+    let projectToClone = JSON.parse(JSON.stringify(this.getProjectById(projectIdToClone)));
+
+    projectToClone.id = this.projects.length + 1;
+    projectToClone.name = "Copia de " + projectToClone.name;
+    this.addProject(projectToClone);
+    this.activosFijosService.cloneActivosFijos(projectIdToClone);
+    this.CostoAdministrativoService.cloneCostoAdministrativos(projectIdToClone);
+    this.CostoDirectoService.cloneCostoDirectos(projectIdToClone);
+    this.CostoIndirectoService.cloneActivosFijos(projectIdToClone);
+    this.IngresosService.cloneIngresos(projectIdToClone);
+  }
 
   getProjects(): Project[]
   {

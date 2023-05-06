@@ -32,4 +32,8 @@ export class ListComponent {
     this.projectService.deleteProject(id);
     this.ngOnInit();
   }
+  cloneProj(id:number){
+    this.projectService.cloneProject(id);
+    this.ngOnInit();
+  }
 }

@@ -25,6 +25,14 @@ export class CostoAdministrativoService {
     return this.costosAdministrativos.filter((CostoAdministrativo) => CostoAdministrativo.projectId == projId);
   }
 
+  cloneCostoAdministrativos(projId : number): void
+  {
+    this.costosAdministrativos = this.getItem();
+    let costosAdministrativosToClone = this.costosAdministrativos.filter((CostoAdministrativo) => CostoAdministrativo.projectId == projId);
+    this.costosAdministrativos = [...this.costosAdministrativos, ...costosAdministrativosToClone];
+    this.setItem(this.costosAdministrativos);
+  }
+
   getCostoAdministrativoById(id: number): CostoAdministrativo
   {
     this.costosAdministrativos = this.getItem();

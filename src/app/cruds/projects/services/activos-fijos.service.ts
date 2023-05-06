@@ -25,6 +25,14 @@ export class ActivosFijosService {
     return this.activosFijos.filter((ActivosFijo) => ActivosFijo.projectId == projId);
   }
 
+  cloneActivosFijos(projId : number): void
+  {
+    this.activosFijos = this.getItem();
+    let activosFijosToClone = this.activosFijos.filter((ActivosFijo) => ActivosFijo.projectId == projId);
+    this.activosFijos = [...this.activosFijos, ...activosFijosToClone];
+    this.setItem(this.activosFijos);
+  }
+
   getActivosFijoById(id: number): ActivosFijos
   {
     this.activosFijos = this.getItem();
