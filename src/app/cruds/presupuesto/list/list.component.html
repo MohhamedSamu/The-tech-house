@@ -1,1 +1,62 @@
-<p>list works!</p>
+<div class="main-content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <button mat-raised-button class="btn btn-info pull-right" routerLink="/cruds/presupuestos/add" >Nuevo presupuesto</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card card-plain">
+            <div class="card-header card-header-danger">
+              <h4 class="card-title mt-0">Presupuestos Realizados</h4>
+              <p class="card-category"> Aquí encontrarás una vista previa de los presupuestos realizados</p>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead class="">
+                    <th>
+                      Nombre Cliente
+                    </th>
+                    <th>
+                      Fecha Presupuesto
+                    </th>
+                    <th>
+                        Monto Final
+                    </th>
+                    <th>
+                        Items
+                    </th>
+                    <th>
+                      Acciones
+                    </th>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let project of this.projects">
+                      <td>
+                        {{ project.name }}
+                      </td>
+                      <td>
+                        {{ project.fecha }}
+                      </td>
+                      <td>
+                        {{ project.montoFinal }}
+                      </td>
+                      <td>
+                        {{ project.totalItems }}
+                      </td>
+                      <td>
+                        <button mat-raised-button type="submit" class="btn btn-success">Editar</button>
+                        <button mat-raised-button type="submit" class="btn btn-info">Presupuesto</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
