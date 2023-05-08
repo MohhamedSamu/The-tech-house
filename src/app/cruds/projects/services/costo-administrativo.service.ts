@@ -25,12 +25,17 @@ export class CostoAdministrativoService {
     return this.costosAdministrativos.filter((CostoAdministrativo) => CostoAdministrativo.projectId == projId);
   }
 
-  cloneCostoAdministrativos(projId : number): void
+  cloneCostoAdministrativos(projId : number, newProjId:number): void
   {
     this.costosAdministrativos = this.getItem();
     let costosAdministrativosToClone = this.costosAdministrativos.filter((CostoAdministrativo) => CostoAdministrativo.projectId == projId);
-    this.costosAdministrativos = [...this.costosAdministrativos, ...costosAdministrativosToClone];
-    this.setItem(this.costosAdministrativos);
+    let newId = this.costosAdministrativos.length + 1;
+    costosAdministrativosToClone.forEach((costo) => {
+      costo.id = newId;
+      costo.projectId = newProjId
+      this.addCostoAdministrativo(costo);
+      newId++;
+    })
   }
 
   getCostoAdministrativoById(id: number): CostoAdministrativo

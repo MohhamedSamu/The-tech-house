@@ -90,6 +90,7 @@ export class EvaluateComponent {
     let id = this.router.url.split("/")[this.router.url.split("/").length - 1];
     this.projectInfo = this.projectService.getFullProjectInfoById(+id);
     if (this.projectInfo.project != undefined) {
+      console.log("this.projectInfo", this.projectInfo)
       this.tempPorcentajeBanco =
         (this.projectInfo.project.porcentajePrestamo * 100).toFixed(2) + "%";
       this.tempPorcentajePropio =
@@ -137,6 +138,7 @@ export class EvaluateComponent {
         this.projectInfo.costosIndirectosList,
         this.projectInfo.project.tiempoPrestamo
       );
+      this.anios = [];
       for (
         let index = 1;
         index <= this.projectInfo.project.tiempoPrestamo;

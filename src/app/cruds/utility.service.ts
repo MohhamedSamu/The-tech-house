@@ -318,7 +318,16 @@ export class UtilityService {
     
     beneficioCosto = npv / capital ;
 
-    itr = finance.IRR(-capital, ...flujoNetoTotal);
+    let negativeNums = 0;
+    flujoNetoTotal.forEach((flujo)=>{
+      if (flujo < 0) negativeNums++;
+    })
+
+    if (negativeNums == flujoNetoTotal.length){
+      itr = 0;
+    }else{
+      itr = finance.IRR(-capital, ...flujoNetoTotal);
+    }
     
     caue = this.pmt(tasaInteres/100, n, vpn, 0, 0);
 
