@@ -26,12 +26,17 @@ export class IngresosService {
     return this.ingresos.filter((Ingreso) => Ingreso.projectId == projId);
   }
 
-  cloneIngresos(projId : number): void
+  cloneIngresos(projId : number, newProjId:number): void
   {
     this.ingresos = this.getItem();
     let ingresosToClone = this.ingresos.filter((Ingreso) => Ingreso.projectId == projId);
-    this.ingresos = [...this.ingresos, ...ingresosToClone];
-    this.setItem(this.ingresos);
+    let newId = this.ingresos.length + 1;
+    ingresosToClone.forEach((ingreso) => {
+      ingreso.id = newId;
+      ingreso.projectId = newProjId
+      this.addIngreso(ingreso);
+      newId++;
+    })
   }
 
   getIngresoById(id: number): Ingreso

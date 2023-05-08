@@ -1,0 +1,153 @@
+{
+    "project": {
+        "name": "TheTechHouse - Acaces - con compra de inmueble",
+        "canBeEvaluated": true,
+        "tmar": "16",
+        "totalActivosFijos": 338056.68,
+        "porcentajeCapitalPropio": 0.11832335335009503,
+        "totalCapitalPropio": 40000,
+        "porcentajePrestamo": 0.881676646649905,
+        "totalPrestamo": 298056.68,
+        "tasaInteresBanco": 15,
+        "tiempoPrestamo": 5,
+        "tasaImpuesto": 25,
+        "id": 1
+    },
+    "activosFijosList": [
+        {
+            "name": "Computadoras de desarrollo",
+            "porcentajeDepreciacion": 80,
+            "projectId": 1,
+            "valor": 3892.68,
+            "vidaUtil": 5,
+            "id": 1
+        },
+        {
+            "name": "Mobiliario y equipo de oficina",
+            "porcentajeDepreciacion": 45,
+            "projectId": 1,
+            "valor": 2700,
+            "vidaUtil": 3,
+            "id": 2
+        },
+        {
+            "name": "Vehículo de transporte e instalación de productos",
+            "porcentajeDepreciacion": 50,
+            "projectId": 1,
+            "valor": 9000,
+            "vidaUtil": 5,
+            "id": 3
+        },
+        {
+            "name": "Oficina y Remodelación",
+            "porcentajeDepreciacion": 95,
+            "projectId": 1,
+            "valor": 322464,
+            "vidaUtil": 5,
+            "id": 4
+        }
+    ],
+    "costosAdministrativosList": [
+        {
+            "name": "Sueldos y salarios",
+            "projectId": 1,
+            "valor": 85910,
+            "incrementoAnual": 5,
+            "id": 1
+        },
+        {
+            "name": "Facturas de servicios de agua potable ",
+            "projectId": 1,
+            "valor": 180,
+            "incrementoAnual": 2.25,
+            "id": 2
+        },
+        {
+            "name": "Facturas de electricidad",
+            "projectId": 1,
+            "valor": 1200,
+            "incrementoAnual": 3.35,
+            "id": 3
+        },
+        {
+            "name": "Facturas de internet y telefonía personal",
+            "projectId": 1,
+            "valor": 1080,
+            "incrementoAnual": 2.95,
+            "id": 4
+        }
+    ],
+    "costosDirectosList": [
+        {
+            "incrementoAnual": 7.5,
+            "name": "Suministros (productos)",
+            "projectId": 1,
+            "valor": 218434.8,
+            "id": 1
+        },
+        {
+            "name": "Dominio y servidores informáticos",
+            "projectId": 1,
+            "valor": 75.06,
+            "incrementoAnual": 0,
+            "id": 2
+        },
+        {
+            "name": "Google Workspace",
+            "projectId": 1,
+            "valor": 576,
+            "incrementoAnual": 0,
+            "id": 3
+        }
+    ],
+    "costosIndirectosList": [
+        {
+            "incrementoAnual": 7.5,
+            "name": "Repuestos",
+            "projectId": 1,
+            "valor": 21843.48,
+            "id": 1
+        },
+        {
+            "name": "Combustible",
+            "projectId": 1,
+            "valor": 2400,
+            "incrementoAnual": 2.7,
+            "id": 2
+        }
+    ],
+    "ingresosList": [
+        {
+            "incrementoAnual": 50,
+            "name": "Venta de producto individual",
+            "projectId": 1,
+            "valorOptimista": 143479.2,
+            "valorPesimista": 35869.8,
+            "id": 1
+        },
+        {
+            "incrementoAnual": 50,
+            "name": "Instalaciones del servicio",
+            "projectId": 1,
+            "valorOptimista": 30130.63,
+            "valorPesimista": 7532.65,
+            "id": 2
+        },
+        {
+            "incrementoAnual": 50,
+            "name": "Membresías mensuales",
+            "projectId": 1,
+            "valorOptimista": 39000,
+            "valorPesimista": 9750,
+            "id": 3
+        },
+        {
+            "incrementoAnual": 50,
+            "name": "Reparaciones ",
+            "projectId": 1,
+            "valorOptimista": 10760.94,
+            "valorPesimista": 4304.37,
+            "id": 4
+        }
+    ]
+}

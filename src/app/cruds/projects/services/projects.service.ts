@@ -41,11 +41,11 @@ export class ProjectsService
     projectToClone.id = this.projects.length + 1;
     projectToClone.name = "Copia de " + projectToClone.name;
     this.addProject(projectToClone);
-    this.activosFijosService.cloneActivosFijos(projectIdToClone);
-    this.CostoAdministrativoService.cloneCostoAdministrativos(projectIdToClone);
-    this.CostoDirectoService.cloneCostoDirectos(projectIdToClone);
-    this.CostoIndirectoService.cloneActivosFijos(projectIdToClone);
-    this.IngresosService.cloneIngresos(projectIdToClone);
+    this.activosFijosService.cloneActivosFijos(projectIdToClone, projectToClone.id);
+    this.CostoAdministrativoService.cloneCostoAdministrativos(projectIdToClone, projectToClone.id);
+    this.CostoDirectoService.cloneCostoDirectos(projectIdToClone, projectToClone.id);
+    this.CostoIndirectoService.cloneActivosFijos(projectIdToClone, projectToClone.id);
+    this.IngresosService.cloneIngresos(projectIdToClone, projectToClone.id);
   }
 
   getProjects(): Project[]

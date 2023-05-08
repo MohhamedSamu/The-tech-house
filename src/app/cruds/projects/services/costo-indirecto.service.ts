@@ -25,12 +25,17 @@ export class CostoIndirectoService {
     return this.costosIndirectos.filter((CostoIndirecto) => CostoIndirecto.projectId == projId);
   }
 
-  cloneActivosFijos(projId : number): void
+  cloneActivosFijos(projId : number, newProjId:number): void
   {
     this.costosIndirectos = this.getItem();
     let costosIndirectosToClone = this.costosIndirectos.filter((CostoIndirecto) => CostoIndirecto.projectId == projId);
-    this.costosIndirectos = [...this.costosIndirectos, ...costosIndirectosToClone];
-    this.setItem(this.costosIndirectos);
+    let newId = this.costosIndirectos.length + 1;
+    costosIndirectosToClone.forEach((activo) => {
+      activo.id = newId;
+      activo.projectId = newProjId
+      this.addActivosFijo(activo);
+      newId++;
+    })
   }
 
   getActivosFijoById(id: number): CostoIndirecto
