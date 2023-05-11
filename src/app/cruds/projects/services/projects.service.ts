@@ -87,6 +87,7 @@ export class ProjectsService {
   }
 
   getProjects(): Project[] {
+    console.log('here')
     return this.getItem();
   }
 
@@ -159,7 +160,7 @@ export class ProjectsService {
       localStorage.getItem(TABLE_NAME) == "" ||
       localStorage.getItem(TABLE_NAME) == undefined
     ) {
-      this.setItem([]);
+      this.setItem(this.projects);
     }
     return JSON.parse(localStorage.getItem(TABLE_NAME));
   }

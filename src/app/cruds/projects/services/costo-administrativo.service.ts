@@ -128,7 +128,7 @@ export class CostoAdministrativoService {
 
   getItem(){
     if (localStorage.getItem(TABLE_NAME) == "" || localStorage.getItem(TABLE_NAME) == undefined){
-      this.setItem([]);
+      this.setItem(this.costosAdministrativos);
     }
     return JSON.parse(localStorage.getItem(TABLE_NAME))
   }

@@ -122,7 +122,7 @@ export class CostoDirectoService {
       localStorage.getItem(TABLE_NAME) == "" ||
       localStorage.getItem(TABLE_NAME) == undefined
     ) {
-      this.setItem([]);
+      this.setItem(this.costosDirectos);
     }
     return JSON.parse(localStorage.getItem(TABLE_NAME));
   }

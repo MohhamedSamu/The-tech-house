@@ -142,7 +142,7 @@ export class ActivosFijosService {
       localStorage.getItem(TABLE_NAME) == "" ||
       localStorage.getItem(TABLE_NAME) == undefined
     ) {
-      this.setItem([]);
+      this.setItem(this.activosFijos);
     }
     return JSON.parse(localStorage.getItem(TABLE_NAME));
   }

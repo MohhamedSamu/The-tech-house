@@ -141,7 +141,7 @@ export class IngresosService {
       localStorage.getItem(TABLE_NAME) == "" ||
       localStorage.getItem(TABLE_NAME) == undefined
     ) {
-      this.setItem([]);
+      this.setItem(this.ingresos);
     }
     return JSON.parse(localStorage.getItem(TABLE_NAME));
   }

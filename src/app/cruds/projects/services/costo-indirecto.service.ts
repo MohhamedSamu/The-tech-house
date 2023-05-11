@@ -108,7 +108,7 @@ export class CostoIndirectoService {
       localStorage.getItem(TABLE_NAME) == "" ||
       localStorage.getItem(TABLE_NAME) == undefined
     ) {
-      this.setItem([]);
+      this.setItem(this.costosIndirectos);
     }
     return JSON.parse(localStorage.getItem(TABLE_NAME));
   }
