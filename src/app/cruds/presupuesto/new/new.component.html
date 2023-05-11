@@ -1,0 +1,169 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+              <button mat-raised-button class="btn btn-info pull-right" routerLink="/cruds/presupuestos">Regresar</button>
+              <button *ngIf="solicitudes.length > 0" mat-raised-button class="btn btn-success pull-right" (click)="goToPresupuesto()">Ver Presupuesto</button>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="card">
+                    <div class="card-header card-header-danger" style="display: flex; justify-content: space-between; align-items: center;">
+                        <h4 class="card-title">Presupuesto</h4>
+                        <button mat-raised-button class="btn btn-success pull-right" (click)="colapseState = !colapseState" > {{ colapseState ? '+' : '-'  }} </button>
+                    </div>
+                    <div class="card-body" *ngIf="!colapseState">
+                        <form>
+                          <div class="row">
+                            <div class="col-md-6">
+                              <mat-form-field class="example-full-width">
+                                <input name="projName" matInput placeholder="Cliente" [(ngModel)]="pedido.cliente">
+                              </mat-form-field>
+                            </div>
+                            <div class="col-md-6">
+                              <mat-form-field class="example-full-width">
+                                <input type="date" name="fecha" matInput placeholder="Fecha"
+                                  [(ngModel)]="pedido.fecha" disabled>
+                              </mat-form-field>
+                            </div>
+                          </div>
+                          
+                          <div class="row" *ngIf="createdState">
+                            <div class="col-md-6">
+                              <mat-form-field class="example-full-width">
+                                <input name="subTotal" matInput placeholder="Sub Total"
+                                  [(ngModel)]="pedido.subTotal" disabled>
+                              </mat-form-field>
+                            </div>
+
+                            <div class="col-md-6">
+                                <mat-form-field class="example-full-width">
+                                  <input name="servicios" matInput placeholder="Servicios de Instalación"
+                                    [(ngModel)]="pedido.servicios" disabled>
+                                </mat-form-field>
+                              </div>
+                            
+                          </div>
+
+                          <div class="row" *ngIf="createdState">
+                            <div class="col-md-6">
+                                <mat-form-field class="example-full-width">
+                                  <input name="precioFinal" matInput placeholder="Precio Final"
+                                    [(ngModel)]="pedido.precioFinal" disabled>
+                                </mat-form-field>
+                              </div>
+                          </div>
+                          
+                          <button mat-raised-button type="submit" class="btn btn-danger pull-right"
+                            (click)="onSubmit()" *ngIf="!createdState">Guardar</button>
+                          <div class="clearfix"></div>
+                        </form>
+                      </div>
+                      <div class="card-body" *ngIf="colapseState"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid" *ngIf="createdState">
+        <div class="row" *ngIf="showTable">
+            <div class="col-md-12">
+              <div class="card card-plain">
+                <div class="card-header card-header-danger" style="display: flex; justify-content: space-between; align-items: center;">
+                  <h4 class="card-title mt-0">Solicitudes del Presupuesto</h4>
+                  <button mat-raised-button class="btn btn-success pull-right" (click)="showFormSolicitud()"> Agregar </button>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table table-hover">
+                      <thead class="">
+                        <th>
+                          Producto
+                        </th>
+                        <th>
+                          Cantidad
+                        </th>
+                        <th>
+                            SubTotal
+                        </th>
+                        <th>
+                          Acciones
+                        </th>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let solicitud of this.solicitudes">
+                          <td>
+                            {{ solicitud.nombre }} - ${{solicitud.precio}}
+                          </td>
+                          <td>
+                            {{ solicitud.cantidad }}
+                          </td>
+                          <td>
+                            ${{ solicitud.subTotal }}
+                          </td>
+                          <td>
+                            <!-- <button mat-raised-button type="button" (click)="goTo(solicitud.idSolicitud)" class="btn btn-success">Mostrar</button> -->
+                            <button mat-raised-button type="button" (click)="eliminarSolicitud(solicitud)" class="btn btn-danger">Eliminar</button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+
+        <div class="row" *ngIf="!showTable">
+            <div class="col-md-12">
+
+                <div class="card">
+                    <div class="card-header card-header-danger" style="display: flex; justify-content: space-between; align-items: center;">
+                        <h4 class="card-title">Solicitud</h4>
+                        <button mat-raised-button class="btn btn-success pull-right" (click)="showTable = true" > Volver </button>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                          <div class="row">
+                            <div class="col-md-6">
+                              <mat-form-field class="example-full-width">
+                                <mat-label>Selecciona el producto</mat-label>
+                                <mat-select [(ngModel)]="newSolicitud.idProducto" (selectionChange)="onCantidadChange()">
+                                    <mat-option *ngFor="let producto of this.productos" 
+                                    [value]="producto.idProducto"> {{ producto.nombre }} - ${{ producto.precio }}
+                                    </mat-option>
+                                </mat-select>
+                              </mat-form-field>
+                            </div>
+                            <div class="col-md-6">
+                                <mat-form-field class="example-full-width">
+                                  <input name="cantidad" matInput placeholder="Cantidad" type="number" min="1"
+                                    [(ngModel)]="newSolicitud.cantidad" (change)="onCantidadChange()">
+                                </mat-form-field>
+                              </div>
+                          </div>
+                          
+                          <div class="row">
+                            <div class="col-md-6">
+                              <mat-form-field class="example-full-width">
+                                <input name="subTotal" matInput placeholder="SubTotal"
+                                  [(ngModel)]="newSolicitud.subTotal" disabled>
+                              </mat-form-field>
+                            </div>
+                          </div>
+                          
+                          <button mat-raised-button type="submit" class="btn btn-danger pull-right"
+                            (click)="onSubmitSolicitud()" [disabled]="newSolicitud.cantidad <= 0 || newSolicitud.idProducto == 0" *ngIf="!editSolicitud">Guardar</button>
+                          <div class="clearfix"></div>
+                        </form>
+                      </div>
+                      <div class="card-body" *ngIf="colapseState"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
