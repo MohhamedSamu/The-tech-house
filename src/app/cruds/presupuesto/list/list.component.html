@@ -33,22 +33,22 @@
                     </th>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let project of this.projects">
+                    <tr *ngFor="let pedido of this.pedidos">
                       <td>
-                        {{ project.name }}
+                        {{ pedido.cliente }}
                       </td>
                       <td>
-                        {{ project.fecha }}
+                        {{ pedido.fecha | date: 'dd/MM/yyyy' }}
                       </td>
                       <td>
-                        {{ project.montoFinal }}
+                        {{ pedido.precioFinal }}
                       </td>
                       <td>
-                        {{ project.totalItems }}
+                        {{ pedido.items }}
                       </td>
                       <td>
-                        <button mat-raised-button type="submit" class="btn btn-success">Editar</button>
-                        <button mat-raised-button type="submit" class="btn btn-info">Presupuesto</button>
+                        <button mat-raised-button type="submit" (click)="goTo(pedido.id)" class="btn btn-success">Mostrar</button>
+                        <button mat-raised-button type="submit" (click)="presupuestos(pedido.id)" class="btn btn-info">Presupuesto</button>
                       </td>
                     </tr>
                   </tbody>
