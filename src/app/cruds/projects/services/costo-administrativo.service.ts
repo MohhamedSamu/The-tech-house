@@ -7,7 +7,64 @@ const TABLE_NAME = "CostosAdministrativos";
   providedIn: 'root'
 })
 export class CostoAdministrativoService {
-  costosAdministrativos: CostoAdministrativo[] = [];
+  costosAdministrativos: CostoAdministrativo[] = [
+    {
+      "name": "Sueldos y salarios",
+      "projectId": 1,
+      "valor": 85910,
+      "incrementoAnual": 5,
+      "id": 1
+  },
+  {
+      "name": "Facturas de servicios de agua potable ",
+      "projectId": 1,
+      "valor": 180,
+      "incrementoAnual": 2.25,
+      "id": 2
+  },
+  {
+      "name": "Facturas de electricidad",
+      "projectId": 1,
+      "valor": 1200,
+      "incrementoAnual": 3.35,
+      "id": 3
+  },
+  {
+      "name": "Facturas de internet y telefonía personal",
+      "projectId": 1,
+      "valor": 1080,
+      "incrementoAnual": 2.95,
+      "id": 4
+  },
+  {
+    "name": "Sueldos y salarios",
+    "projectId": 2,
+    "valor": 85910,
+    "incrementoAnual": 5,
+    "id": 5
+},
+{
+    "name": "Facturas de servicios de agua potable ",
+    "projectId": 2,
+    "valor": 180,
+    "incrementoAnual": 2.25,
+    "id": 6
+},
+{
+    "name": "Facturas de electricidad",
+    "projectId": 2,
+    "valor": 1200,
+    "incrementoAnual": 3.35,
+    "id": 7
+},
+{
+    "name": "Facturas de internet y telefonía personal",
+    "projectId": 2,
+    "valor": 1080,
+    "incrementoAnual": 2.95,
+    "id": 8
+}
+  ];
 
   constructor() { }
 
